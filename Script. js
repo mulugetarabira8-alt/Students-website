@@ -1,0 +1,1544 @@
+
+let currentStep = 1;
+
+const steps = document.querySelectorAll(".form-step");
+const progressSteps = document.querySelectorAll(".progress-step");
+
+
+/* ================================
+   SHOW STEP
+================================ */
+
+function showStep(stepNumber) {any}
+
+    currentStep = stepNumber;
+
+    steps.forEach(function(step) {
+        step.classList.remove("active");
+    });
+
+    const current = document.querySelector(
+        `.form-step[data-step="${stepNumber}"]`
+    );
+
+    current.classList.add("active");
+
+
+    progressSteps.forEach(function(step, index) {
+
+        if (index < stepNumber) {
+            step.classList.add("active");
+        } else {
+            step.classList.remove("active");
+        }
+
+    });
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* ================================
+   VALIDATE CURRENT STEP
+================================ */
+
+function validateStep(stepNumber) {
+
+    const current = document.querySelector(
+        `.form-step[data-step="${stepNumber}"]`
+    );
+
+    const inputs = current.querySelectorAll(
+        "input[required], select[required]"
+    );
+
+    for (const input of inputs) {
+
+        if (!input.checkValidity()) {
+
+            input.reportValidity();
+
+            return false;
+
+
+/* ================================
+   NEXT BUTTONS
+================================ */
+
+const nextButtons = document.querySelectorAll(".next-btn");
+
+nextButtons.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const nextStep = Number(button.dataset.next);
+
+        if (!validateStep(currentStep)) {
+            return;
+        }
+
+        if (nextStep === 5) {
+            updateReview();
+        }
+
+        showStep(nextStep);
+
+    });
+
+});
+
+
+/* ================================
+   BACK BUTTONS
+================================ */
+
+const backButtons = document.querySelectorAll(".back-btn");
+
+backButtons.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const previousStep = Number(button.dataset.back);
+
+        showStep(previousStep);
+
+    });
+
+});
+
+
+/* ================================
+   IMAGE PREVIEW
+================================ */
+
+function setupImagePreview(inputId, previewId) {
+
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    input.addEventListener("change", function() {
+
+        preview.innerHTML = "";
+
+        const file = input.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+
+            alert("Please select an image file.");
+
+            input.value = "";
+
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+
+            const image = document.createElement("img");
+
+            image.src = event.target.result;
+
+            image.alt = "Uploaded document preview";
+
+            preview.appendChild(image);
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+setupImagePreview(
+    "selfie",
+    "selfiePreview"
+);
+
+setupImagePreview(
+    "nationalIdFront",
+    "nationalFrontPreview"
+);
+
+setupImagePreview(
+    "nationalIdBack",
+    "nationalBackPreview"
+);
+
+setupImagePreview(
+    "studentIdFront",
+    "studentFrontPreview"
+);
+
+setupImagePreview(
+    "studentIdBack",
+    "studentBackPreview"
+);
+
+
+/* ================================
+   REVIEW INFORMATION
+================================ */
+
+function updateReview() {
+
+    document.getElementById("reviewFirstName").textContent =
+        document.getElementById("firstName").value;
+
+    document.getElementById("reviewSecondName").textContent =
+        document.getElementById("secondName").value;
+
+    document.getElementById("reviewGrade").textContent =
+        document.getElementById("grade").value;
+
+    document.getElementById("reviewEmail").textContent =
+        document.getElementById("email").value;
+
+    document.getElementById("reviewNationalName").textContent =
+        document.getElementById("nationalIdName").value;
+
+}
+
+
+/* ================================
+   NAME NORMALIZATION
+================================ */
+
+function normalizeName(name) {
+
+    return name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+
+}
+
+
+/* ================================
+   FRONTEND NAME CHECK
+================================ */
+
+function checkNameMatch() {
+
+    const firstName = normalizeName(
+        document.getElementById("firstName").value
+    );
+
+    const secondName = normalizeName(
+        document.getElementById("secondName").value
+    );
+
+    const nationalName = normalizeName(
+        document.getElementById("nationalIdName").value
+    );
+
+
+    const expectedName =
+        `${firstName} ${secondName}`;
+
+
+    return nationalName === expectedName;
+}
+
+
+/* ================================
+   SUBMIT
+================================ */
+
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    if (!validateStep(5)) {
+        return;
+    }
+
+
+    /*
+        IMPORTANT:
+
+        This frontend check is only a basic check.
+
+        Real ID verification must happen on
+        the backend using secure document
+        processing and/or manual admin review.
+    */
+
+    if (!checkNameMatch()) {
+
+        alert(
+            "The name entered for the National ID does not match the First Name and Second Name you entered."
+        );
+
+        return;
+    }
+
+
+    alert(
+        "Registration submitted successfully!\n\n" +
+        "Your application is now pending verification."
+    );
+
+
+    /*
+        Later we will replace this alert with:
+
+        fetch("/api/register", {
+            method: "POST",
+            body: new FormData(form)
+      form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    if (!validateStep(5)) {
+        return;
+    }
+
+    const agreement =
+        document.getElementById("agreement");
+
+    if (!agreement.checked) {
+
+        alert(
+            "Please confirm that your information is accurate."
+        );
+
+        return;
+    }
+
+
+    const formData =
+        new FormData(form);
+
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/auth/register",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+            alert(
+                data.message ||
+                "Registration failed."
+            );
+
+            return;
+        }
+
+
+        alert(
+            "Registration submitted successfully!\n\n" +
+            "Your account is waiting for school verification."
+        );
+
+
+        window.location.href =
+            "login.html";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not connect to the school server."
+        )
+        const form = document.getElementById(
+    "adminLoginForm"
+);
+
+const message = document.getElementById(
+    "loginMessage"
+);
+
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        message.textContent = "";
+
+
+        const email =
+            document.getElementById("email").value;
+
+        const password =
+            document.getElementById("password").value;
+
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/auth/admin-login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                message.textContent =
+                    data.message ||
+                    "Login failed.";
+
+                return;
+            }
+
+
+            sessionStorage.setItem(
+                "adminToken",
+                data.token
+            );
+
+
+            sessionStorage.setItem(
+                "adminEmail",
+                data.admin.email
+            );
+
+
+            window.location.href =
+                "admin-dashboard.html";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.textContent =
+                "Cannot connect to the server.";
+
+        }
+
+    }
+);const API = "http://localhost:5000/api";
+
+const token =
+    sessionStorage.getItem("adminToken");
+
+const adminEmail =
+    sessionStorage.getItem("adminEmail");
+
+
+/* =========================
+   AUTH CHECK
+========================= */
+
+if (!token) {
+
+    window.location.href =
+        "admin-login.html";
+}
+
+
+document.getElementById(
+    "adminEmail"
+).textContent = adminEmail || "Administrator";
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const modal =
+    document.getElementById("studentModal");
+
+const studentTableBody =
+    document.getElementById("studentTableBody");
+
+const studentListBody =
+    document.getElementById("studentListBody");
+
+
+let students = [];
+
+let selectedStudentId = null;
+
+
+/* =========================
+   API REQUEST
+========================= */
+
+async function apiRequest(
+    endpoint,
+    options = {}
+) {
+
+    const response = await fetch(
+        `${API}${endpoint}`,
+        {
+            ...options,
+
+            headers: {
+                "Content-Type": "application/json",
+
+                "Authorization":
+                    `Bearer ${token}`,
+
+                ...(options.headers || {})
+            }
+        }
+    );
+
+
+    if (response.status === 401 ||
+        response.status === 403) {
+
+        sessionStorage.clear();
+
+        window.location.href =
+            "admin-login.html";
+
+        return null;
+    }
+
+
+    const data =
+        await response.json();
+
+    return {
+        response,
+        data
+    };
+}
+
+
+/* =========================
+   LOAD STUDENTS
+========================= */
+
+async function loadStudents() {
+
+    try {
+
+        const result =
+            await apiRequest(
+                "/admin/students/pending"
+            );
+
+
+        if (!result) {
+            return;
+        }
+
+
+        students =
+            result.data.students || [];
+
+
+        renderStudents(
+            students
+        );
+
+        updateStats();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not load students."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   RENDER STUDENTS
+========================= */
+
+function renderStudents(list) {
+
+    const html =
+        list.map(function(student) {
+
+            const name =
+                `${student.first_name} ${student.second_name}`;
+
+
+            return `
+
+                <tr>
+
+                    <td>
+                        <strong>${escapeHTML(name)}</strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.grade)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.email)}
+                    </td>
+
+                    <td>
+
+                        <span class="status ${student.verification_status}">
+
+                            ${formatStatus(
+                                student.verification_status
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="view-button"
+                            onclick="openStudent(${student.id})"
+                        >
+                            View
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+
+    studentTableBody.innerHTML =
+        html || emptyTable();
+
+
+    studentListBody.innerHTML =
+        html || emptyTable();
+
+}
+
+
+function emptyTable() {
+
+    return `
+
+        <tr>
+
+            <td
+                colspan="5"
+                style="text-align:center;padding:40px;"
+            >
+                No applications found.
+            </td>
+
+        </tr>
+
+    `;
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+async function updateStats() {
+
+    try {
+
+        const result =
+            await apiRequest(
+                "/admin/students/pending"
+            );
+
+
+        if (!result) {
+            return;
+        }
+
+
+        const pending =
+            result.data.students || [];
+
+
+        document.getElementById(
+            "pendingStudents"
+        ).textContent =
+            pending.filter(
+                s => s.verification_status === "PENDING"
+            ).length;
+
+
+        document.getElementById(
+            "reviewStudents"
+        ).textContent =
+            pending.filter(
+                s => s.verification_status === "NEEDS_REVIEW"
+            ).length;
+
+
+        /*
+         * This endpoint currently returns only
+         * PENDING and NEEDS_REVIEW students.
+         *
+         * Later we'll add a statistics endpoint
+         * that counts all students.
+         */
+
+        document.getElementById(
+            "totalStudents"
+        ).textContent =
+            pending.length;
+
+
+        document.getElementById(
+            "verifiedStudents"
+        ).textContent =
+            "—";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================
+   OPEN STUDENT
+========================= */
+
+async function openStudent(id) {
+
+    selectedStudentId = id;
+
+
+    try {
+
+        const result =
+            await apiRequest(
+                `/admin/students/${id}`
+            );
+
+
+        if (!result) {
+            return;
+        }
+
+
+        if (!result.response.ok) {
+
+            alert(
+                result.data.message ||
+                "Could not load student."
+            );
+
+            return;
+        }
+
+
+        const student =
+            result.data.student;
+
+
+        const name =
+            `${student.first_name} ${student.second_name}`;
+
+
+        document.getElementById(
+            "modalStudentName"
+        ).textContent = name;
+
+
+        document.getElementById(
+            "modalStudentEmail"
+        ).textContent =
+            student.email;
+
+
+        document.getElementById(
+            "studentDetails"
+        ).innerHTML = `
+
+            <div class="detail">
+
+                <span>First Name</span>
+
+                <strong>
+                    ${escapeHTML(student.first_name)}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>Second Name</span>
+
+                <strong>
+                    ${escapeHTML(student.second_name)}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>Grade</span>
+
+                <strong>
+                    ${escapeHTML(student.grade)}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>National ID Name</span>
+
+                <strong>
+                    ${escapeHTML(student.national_id_name)}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>Status</span>
+
+                <strong>
+                    ${formatStatus(
+                        student.verification_status
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+
+        /*
+         * Document URLs are intentionally not created
+         * here because uploads must be private.
+         *
+         * We'll create a protected backend document
+         * endpoint next.
+         */
+
+        document.getElementById(
+            "selfieDocument"
+        ).innerHTML =
+            privateDocumentMessage();
+
+
+        document.getElementById(
+            "nationalFrontDocument"
+        ).innerHTML =
+            privateDocumentMessage();
+
+
+        document.getElementById(
+            "nationalBackDocument"
+        ).innerHTML =
+            privateDocumentMessage();
+
+
+        document.getElementById(
+            "studentFrontDocument"
+        ).innerHTML =
+            privateDocumentMessage();
+
+
+        document.getElementById(
+            "studentBackDocument"
+        ).innerHTML =
+            privateDocumentMessage();
+
+
+        modal.classList.add("show");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not load student."
+        );
+
+    }
+
+}
+
+
+function privateDocumentMessage() {
+
+    return `
+
+        <div style="
+            padding:30px;
+            text-align:center;
+            color:#64748b;
+        ">
+
+            🔒 Private document
+
+            <br><br>
+
+            Protected document viewer
+            will be connected to the
+            secure backend.
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   APPROVE
+========================= */
+
+document.getElementById(
+    "approveButton"
+).addEventListener(
+    "click",
+    async function() {
+
+        if (!selectedStudentId) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to approve this student?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const result =
+            await apiRequest(
+                `/admin/students/${selectedStudentId}/approve`,
+                {
+                    method: "PATCH"
+                }
+            );
+
+
+        if (!result) {
+            return;
+        }
+
+
+        if (!result.response.ok) {
+
+            alert(
+                result.data.message ||
+                "Could not approve student."
+            );
+
+            return;
+        }
+
+
+        alert(
+            "Student approved successfully."
+        );
+
+
+        closeModal();
+
+        loadStudents();
+
+    }
+);
+
+
+/* =========================
+   REJECT
+========================= */
+
+document.getElementById(
+    "rejectButton"
+).addEventListener(
+    "click",
+    async function() {
+
+        if (!selectedStudentId) {
+            return;
+        }
+
+
+        const reason =
+            prompt(
+                "Why are you rejecting this application?"
+            );
+
+
+        if (!reason) {
+            return;
+        }
+
+
+        const result =
+            await apiRequest(
+                `/admin/students/${selectedStudentId}/reject`,
+                {
+                    method: "PATCH",
+
+                    body: JSON.stringify({
+                        reason
+                    })
+                }
+            );
+
+
+        if (!result) {
+            return;
+        }
+
+
+        if (!result.response.ok) {
+
+            alert(
+                result.data.message ||
+                "Could not reject student."
+            );
+
+            return;
+        }
+
+
+        alert(
+            "Student application rejected."
+        );
+
+
+        closeModal();
+
+        loadStudents();
+
+    }
+);
+
+
+/* =========================
+   NEEDS REVIEW
+========================= */
+
+document.getElementById(
+    "reviewButton"
+).addEventListener(
+    "click",
+    async function() {
+
+        if (!selectedStudentId) {
+            return;
+        }
+
+
+        alert(
+            "This application should remain under manual review."
+        );
+
+    }
+);
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+document.getElementById(
+    "closeModal"
+).addEventListener(
+    "click",
+    closeModal
+);
+
+
+function closeModal() {
+
+    modal.classList.remove("show");
+
+    selectedStudentId = null;
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+const navItems =
+    document.querySelectorAll(
+        ".nav-item"
+    );
+
+
+navItems.forEach(function(item) {
+
+    item.addEventListener(
+        "click",
+        function() {
+
+            const section =
+                item.dataset.section;
+
+
+            navItems.forEach(
+                n => n.classList.remove("active")
+            );
+
+            item.classList.add("active");
+
+
+            document.querySelectorAll(
+                ".content-section"
+            ).forEach(function(sectionElement) {
+
+                sectionElement.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            document.getElementById(
+                `${section}Section`
+            ).classList.add("active");
+
+
+            document.getElementById(
+                "pageTitle"
+            ).textContent =
+                item.textContent.trim();
+
+        }
+    );
+
+});
+
+
+/* =========================
+   SEARCH
+========================= */
+
+document.getElementById(
+    "studentSearch"
+).addEventListener(
+    "input",
+    function() {
+
+        const search =
+            this.value
+                .toLowerCase()
+                .trim();
+
+
+        const filtered =
+            students.filter(
+                function(student) {
+
+                    const fullName =
+                        `${student.first_name} ${student.second_name}`
+                        .toLowerCase();
+
+
+                    return (
+                        fullName.includes(search) ||
+                        student.email
+                            .toLowerCase()
+                            .includes(search) ||
+                        student.grade
+                            .toLowerCase()
+                            .includes(search)
+                    );
+
+                }
+            );
+
+
+        renderStudents(filtered);
+
+    }
+);
+
+
+/* =========================
+   REFRESH
+========================= */
+
+document.getElementById(
+    "refreshButton"
+).addEventListener(
+    "click",
+    loadStudents
+);
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+document.getElementById(
+    "logoutButton"
+).addEventListener(
+    "click",
+    function() {
+
+        sessionStorage.clear();
+
+        window.location.href =
+            "admin-login.html";
+
+    }
+);
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function formatstatus {
+
+    return status
+        .replaceAll("_", " ")
+        .toLowerCase()
+        .replace(
+            /\b\w/g,
+            c => c.toUpperCase()
+        );
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadStudents(); 
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
+
+const pool = require("../config/database");
+
+const {
+    authenticateToken,
+    requireAdmin
+} = require("../middleware/auth");
+
+const router = express.Router();
+
+const uploadDirectory = path.join(
+    __dirname,
+    "..",
+    "uploads"
+);
+
+
+/*
+    GET /api/documents/student/:studentId/:documentType
+*/
+
+router.get(
+    "/student/:studentId/:documentType",
+    authenticateToken,
+    requireAdmin,
+    async function(req, res) {
+
+        try {
+
+            const studentId =
+                Number(req.params.studentId);
+
+            const documentType =
+                req.params.documentType;
+
+
+            const allowedDocuments = {
+
+                selfie: "selfie_path",
+
+                nationalIdFront:
+                    "national_id_front",
+
+                nationalIdBack:
+                    "national_id_back",
+
+                studentIdFront:
+                    "student_id_front",
+
+                studentIdBack:
+                    "student_id_back"
+
+            };
+
+
+            if (
+                !Number.isInteger(studentId) ||
+                !allowedDocuments[documentType]
+            ) {
+
+                return res.status(400).json({
+                    message: "Invalid document request."
+                });
+
+            }
+
+
+            const column =
+                allowedDocuments[documentType];
+
+
+            const result = await pool.query(
+
+                `SELECT ${column}
+                 FROM students
+                 WHERE id = $1`,
+
+                [studentId]
+
+            );
+
+
+            if (result.rows.length === 0) {
+
+                return res.status(404).json({
+                    message: "Student not found."
+                });
+
+            }
+
+
+            const filename =
+                result.rows[0][column];
+
+
+            if (!filename) {
+
+                return res.status(404).json({
+                    message: "Document not found."
+                });
+
+            }
+
+
+            /*
+                Prevent path traversal.
+            */
+
+            const safeFilename =
+                path.basename(filename);
+
+
+            const filePath =
+                path.join(
+                    uploadDirectory,
+                    safeFilename
+                );
+
+
+            if (!fs.existsSync(filePath)) {
+
+                return res.status(404).json({
+                    message: "Document file does not exist."
+                });
+
+            }
+
+
+            /*
+                Only allow image files.
+            */
+
+            const extension =
+                path.extname(filePath)
+                    .toLowerCase();
+
+
+            const allowedExtensions = [
+                ".jpg",
+                ".jpeg",
+                ".png"
+            ];
+
+
+            if (
+                !allowedExtensions.includes(
+                    extension
+                )
+            ) {
+
+                return res.status(403).json({
+                    message: "Invalid document type."
+                });
+
+            }
+
+
+            res.sendFile(filePath);
+
+        } catch (error) {
+
+            console.error(error);
+
+            res.status(500).json({
+                message: "Could not load document."
+            });
+
+        }
+
+    }
+);
+
+
+module.exports = router; 
+const documentRoutes =
+    require("./routes/documents");
+  app.use(
+    "/api/documents",
+    documentRoutes
+);const authRoutes = require("./routes/auth");
+const adminRoutes = require("./routes/admin");
+const documentRoutes = require("./routes/documents");
+
+
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+app.use(
+    "/api/admin",
+    adminRoutes
+);
+
+app.use(
+    "/api/documents",
+    documentRoutes
+);require("dotenv").config();
+
+const bcrypt = require("bcrypt");
+
+const pool =
+    require("./config/database");
+
+
+async function createAdmin() {
+
+    const email =
+        "admin@myschool.com";
+
+    const password =
+        "ChangeThisPassword123!";
+
+
+    const hash =
+        await bcrypt.hash(
+            password,
+            12
+        );
+
+
+    await pool.query(
+
+        `INSERT INTO admins
+        (email, password_hash)
+        VALUES (birr100, birr200)
+        ON CONFLICT (email)
+        DO NOTHING`,
+
+        [
+            email,
+            hash
+        ]
+
+    );
+
+
+    console.log(
+        "Admin account created."
+    );
+
+    console.log(
+        "Email:",
+        email
+    );
+
+    console.log(
+        "Password:",
+        password
+    );
+
+
+    await pool.end();
+
+}
+
+
+createAdmin(); 
+const contentRoutes = require("./routes/content");
+const paymentRoutes = require("./routes/payments");
+
+app.use("/api/content", contentRoutes);
+app.use("/api/payments", paymentRoutes);        }
+    }
+
+    return true;
+}
