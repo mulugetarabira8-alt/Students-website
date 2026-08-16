@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+< lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration | My School</title>
+
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+
+<>
+
+<div class="page">
+
+    <div class="register-card">
+
+        <!-- HEADER -->
+
+        <div class="register-header">
+
+            <div class="school-logo">
+                MS
+            </div>
+
+            <h1>Student Registration</h1>
+
+            <p>
+                Create your student account to access the school website.
+            </p>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+            <div class="progress-step active">
+                <span>1</span>
+                <small>Information</small>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step">
+                <span>2</span>
+                <small>Selfie</small>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step">
+                <span>3</span>
+                <small>National ID</small>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step">
+                <span>4</span>
+                <small>Student ID</small>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step">
+                <span>5</span>
+                <small>Review</small>
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="registrationForm" enctype="multipart/form-data">
+
+
+            <!-- STEP 1 -->
+
+            <section class="form-step active" data-step="1">
+
+                <h2>Student Information</h2>
+
+                <p class="description">
+                    Enter your information exactly as it appears on your official documents.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="firstName">
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="Enter your first name"
+                        autocomplete="given-name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="secondName">
+                        Second Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="secondName"
+                        name="secondName"
+                        placeholder="Enter your second name"
+                        autocomplete="family-name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="grade">
+                        Grade
+                    </label>
+
+                    <select id="grade" name="grade" required>
+
+                        <option value="">
+                            Select your grade
+                        </option>
+
+                        <option value="Grade 1">Grade 1</option>
+                        <option value="Grade 2">Grade 2</option>
+                        <option value="Grade 3">Grade 3</option>
+                        <option value="Grade 4">Grade 4</option>
+                        <option value="Grade 5">Grade 5</option>
+                        <option value="Grade 6">Grade 6</option>
+                        <option value="Grade 7">Grade 7</option>
+                        <option value="Grade 8">Grade 8</option>
+                        <option value="Grade 9">Grade 9</option>
+                        <option value="Grade 10">Grade 10</option>
+                        <option value="Grade 11">Grade 11</option>
+                        <option value="Grade 12">Grade 12</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <small>
+                        Password must contain at least 8 characters.
+                    </small>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="next-btn"
+                    data-next="2"
+                >
+                    Continue
+                </button>
+
+            </section>
+
+
+
+            <!-- STEP 2 -->
+
+            <section class="form-step" data-step="2">
+
+                <h2>Selfie Verification</h2>
+
+                <p class="description">
+                    Upload a clear selfie. Your face should be clearly visible.
+                </p>
+
+
+                <div class="upload-box">
+
+                    <div class="upload-icon">
+                        📷
+                    </div>
+
+                    <h3>Upload Selfie</h3>
+
+                    <p>
+                        JPG, JPEG or PNG
+                    </p>
+
+                    <input
+                        type="file"
+                        id="selfie"
+                        name="selfie"
+                        accept="image/jpeg,image/png"
+                        required
+                    >
+
+                    <label for="selfie" class="upload-button">
+                        Choose Selfie
+                    </label>
+
+                    <div
+                        class="image-preview"
+                        id="selfiePreview"
+                    ></div>
+
+                </div>
+
+
+                <div class="button-row">
+
+                    <button
+                        type="button"
+                        class="back-btn"
+                        data-back="1"
+                    >
+                        Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next-btn"
+                        data-next="3"
+                    >
+                        Continue
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- STEP 3 -->
+
+            <section class="form-step" data-step="3">
+
+                <h2>National ID</h2>
+
+                <p class="description">
+                    Upload both sides of your National ID.
+                </p>
+
+
+                <div class="upload-grid">
+
+                    <!-- FRONT -->
+
+                    <div class="upload-box small">
+
+                        <div class="upload-icon">
+                            🪪
+                        </div>
+
+                        <h3>Front Side</h3>
+
+                        <input
+                            type="file"
+                            id="nationalIdFront"
+                            name="nationalIdFront"
+                            accept="image/jpeg,image/png"
+                            required
+                        >
+
+                        <label
+                            for="nationalIdFront"
+                            class="upload-button"
+                        >
+                            Choose Front
+                        </label>
+
+                        <div
+                            class="image-preview"
+                            id="nationalFrontPreview"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- BACK -->
+
+                    <div class="upload-box small">
+
+                        <div class="upload-icon">
+                            🪪
+                        </div>
+
+                        <h3>Back Side</h3>
+
+                        <input
+                            type="file"
+                            id="nationalIdBack"
+                            name="nationalIdBack"
+                            accept="image/jpeg,image/png"
+                            required
+                        >
+
+                        <label
+                            for="nationalIdBack"
+                            class="upload-button"
+                        >
+                            Choose Back
+                        </label>
+
+                        <div
+                            class="image-preview"
+                            id="nationalBackPreview"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="important-note">
+
+                    <strong>Important</strong>
+
+                    <p>
+                        Your name must match the name shown on your National ID.
+                    </p>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="nationalIdName">
+                        Name shown on National ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nationalIdName"
+                        name="nationalIdName"
+                        placeholder="Enter your name exactly as shown on ID"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="button-row">
+
+                    <button
+                        type="button"
+                        class="back-btn"
+                        data-back="2"
+                    >
+                        Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next-btn"
+                        data-next="4"
+                    >
+                        Continue
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- STEP 4 -->
+
+            <section class="form-step" data-step="4">
+
+                <h2>Student ID Card</h2>
+
+                <p class="description">
+                    Upload both sides of your student ID card.
+                </p>
+
+
+                <div class="upload-grid">
+
+                    <!-- FRONT -->
+
+                    <div class="upload-box small">
+
+                        <div class="upload-icon">
+                            🎓
+                        </div>
+
+                        <h3>Front Side</h3>
+
+                        <input
+                            type="file"
+                            id="studentIdFront"
+                            name="studentIdFront"
+                            accept="image/jpeg,image/png"
+                            required
+                        >
+
+                        <label
+                            for="studentIdFront"
+                            class="upload-button"
+                        >
+                            Choose Front
+                        </label>
+
+                        <div
+                            class="image-preview"
+                            id="studentFrontPreview"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- BACK -->
+
+                    <div class="upload-box small">
+
+                        <div class="upload-icon">
+                            🎓
+                        </div>
+
+                        <h3>Back Side</h3>
+
+                        <input
+                            type="file"
+                            id="studentIdBack"
+                            name="studentIdBack"
+                            accept="image/jpeg,image/png"
+                            required
+                        >
+
+                        <label
+                            for="studentIdBack"
+                            class="upload-button"
+                        >
+                            Choose Back
+                        </label>
+
+                        <div
+                            class="image-preview"
+                            id="studentBackPreview"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="button-row">
+
+                    <button
+                        type="button"
+                        class="back-btn"
+                        data-back="3"
+                    >
+                        Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next-btn"
+                        data-next="5"
+                    >
+                        Review
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- STEP 5 -->
+
+            <section class="form-step" data-step="5">
+
+                <h2>Review Your Information</h2>
+
+                <p class="description">
+                    Check your information before submitting your registration.
+                </p>
+
+
+                <div class="review-box">
+
+                    <div class="review-item">
+                        <span>First Name</span>
+                        <strong id="reviewFirstName"></strong>
+                    </div>
+
+                    <div class="review-item">
+                        <span>Second Name</span>
+                        <strong id="reviewSecondName"></strong>
+                    </div>
+
+                    <div class="review-item">
+                        <span>Grade</span>
+                        <strong id="reviewGrade"></strong>
+                    </div>
+
+                    <div class="review-item">
+                        <span>Email</span>
+                        <strong id="reviewEmail"></strong>
+                    </div>
+
+                    <div class="review-item">
+                        <span>National ID Name</span>
+                        <strong id="reviewNationalName"></strong>
+                    </div>
+
+                </div>
+
+
+                <div class="verification-message">
+
+                    <span>🔐</span>
+
+                    <div>
+
+                        <strong>Verification required</strong>
+
+                        <p>
+                            Your registration will be reviewed before
+                            your account is activated.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <label class="agreement">
+
+                    <input
+                        type="checkbox"
+                        id="agreement"
+                        required
+                    >
+
+                    <span>
+                        I confirm that the information and documents
+                        I provided are accurate.
+                    </span>
+
+                </label>
+
+
+                <div class="button-row">
+
+                    <button
+                        type="button"
+                        class="back-btn"
+                        data-back="4"
+                    >
+                        Back
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        Submit Registration
+                    </button>
+
+                </div>
+
+            </section>
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | My School</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin-dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-logo">
+            MS
+        </div>
+
+        <div>
+            <strong>My School</strong>
+            <small>Admin Panel</small>
+        </div>
+    </div>
+
+
+    <nav>
+
+        <button
+            class="nav-item active"
+            data-section="dashboard"
+        >
+            📊 Dashboard
+        </button>
+
+        <button
+            class="nav-item"
+            data-section="students"
+        >
+            👨‍🎓 Students
+        </button>
+
+        <button
+            class="nav-item"
+            data-section="notes"
+        >
+            📚 Notes
+        </button>
+
+        <button
+            class="nav-item"
+            data-section="tutorials"
+        >
+            🎥 Tutorials
+        </button>
+
+        <button
+            class="nav-item"
+            data-section="news"
+        >
+            📰 News
+        </button>
+
+    </nav>
+
+
+    <button
+        id="logoutButton"
+        class="logout-button"
+    >
+        Logout
+    </button>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div>
+
+            <h1 id="pageTitle">
+                Dashboard
+            </h1>
+
+            <p>
+                School administration portal
+            </p>
+
+        </div>
+
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                A
+            </div>
+
+            <div>
+
+                <strong>Administrator</strong>
+
+                <small id="adminEmail">
+                    admin
+                </small>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- DASHBOARD -->
+
+    <section
+        id="dashboardSection"
+        class="content-section active"
+    >
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <span class="stat-icon">
+                    👨‍🎓
+                </span>
+
+                <div>
+
+                    <p>Students</p>
+
+                    <h2 id="totalStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-icon">
+                    ⏳
+                </span>
+
+                <div>
+
+                    <p>Pending</p>
+
+                    <h2 id="pendingStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-icon">
+                    ⚠️
+                </span>
+
+                <div>
+
+                    <p>Needs Review</p>
+
+                    <h2 id="reviewStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-icon">
+                    ✓
+                </span>
+
+                <div>
+
+                    <p>Verified</p>
+
+                    <h2 id="verifiedStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Student Applications</h2>
+
+                    <p>
+                        Students waiting for verification
+                    </p>
+
+                </div>
+
+                <button
+                    id="refreshButton"
+                    class="refresh-button"
+                >
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="studentTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STUDENTS -->
+
+    <section
+        id="studentsSection"
+        class="content-section"
+    >
+
+        <div class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Student Applications</h2>
+
+                    <p>
+                        Review student registrations
+                    </p>
+
+                </div>
+
+                <input
+                    type="search"
+                    id="studentSearch"
+                    placeholder="Search students..."
+                    class="search-input"
+                >
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="studentListBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NOTES -->
+
+    <section
+        id="notesSection"
+        class="content-section"
+    >
+
+        <div class="empty-section">
+
+            <div>📚</div>
+
+            <h2>Notes Management</h2>
+
+            <p>
+                Add, edit and remove school notes here.
+            </p>
+
+            <button>
+                Add New Note
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- TUTORIALS -->
+
+    <section
+        id="tutorialsSection"
+        class="content-section"
+    >
+
+        <div class="empty-section">
+
+            <div>🎥</div>
+
+            <h2>Tutorial Management</h2>
+
+            <p>
+                Add and manage learning tutorials.
+            </p>
+
+            <button>
+                Add Tutorial
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- NEWS -->
+
+    <section
+        id="newsSection"
+        class="content-section"
+    >
+
+        <div class="empty-section">
+
+            <div>📰</div>
+
+            <h2>School News</h2>
+
+            <p>
+                Publish announcements and school news.
+            </p>
+
+            <button>
+                Publish News
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- STUDENT MODAL -->
+
+<div
+    id="studentModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalStudentName">
+                    Student
+                </h2>
+
+                <p id="modalStudentEmail">
+                </p>
+
+            </div>
+
+            <button
+                id="closeModal"
+                class="close-button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="studentDetails"
+            class="student-details"
+        >
+
+        </div>
+
+
+        <div class="documents">
+
+            <h3>Submitted Documents</h3>
+
+            <div class="document-grid">
+
+                <div class="document">
+
+                    <h4>Selfie</h4>
+
+                    <div id="selfieDocument">
+                    </div>
+
+                </div>
+
+
+                <div class="document">
+
+                    <h4>National ID — Front</h4>
+
+                    <div id="nationalFrontDocument">
+                    </div>
+
+                </div>
+
+
+                <div class="document">
+
+                    <h4>National ID — Back</h4>
+
+                    <div id="nationalBackDocument">
+                    </div>
+
+                </div>
+
+
+                <div class="document">
+
+                    <h4>Student ID — Front</h4>
+
+                    <div id="studentFrontDocument">
+                    </div>
+
+                </div>
+
+
+                <div class="document">
+
+                    <h4>Student ID — Back</h4>
+
+                    <div id="studentBackDocument">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                id="reviewButton"
+                class="review-button"
+            >
+                Needs Review
+            </button>
+
+            <button
+                id="rejectButton"
+                class="reject-button"
+            >
+                Reject
+            </button>
+
+            <button
+                id="approveButton"
+                class="approve-button"
+            >
+                Approve Student
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/admin-dashboard.js"></script>
+
+</body>
+
+</html>
